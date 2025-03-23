@@ -26,7 +26,7 @@ const shopSchema = new mongoose.Schema(
       default: "inactive",
     },
     verify: {
-      type: Schema.Types.Boolean,
+      type: Boolean,
       default: false,
     },
     roles: {

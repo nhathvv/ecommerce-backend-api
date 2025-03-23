@@ -1,13 +1,11 @@
+const AccessService = require("../services/access.service");
+
 class AccessController {
   async signUp(req, res, next) {
     try {
       console.log(`[P]::signUp::`, req.body);
-      return res.status(201).json({
-        code: "201",
-        metadata: {
-          userId: 1,
-        },
-      });
+      const result = await AccessService.signUp(req.body);
+      return res.status(201).json(result);
     } catch (error) {
       next(error);
     }
