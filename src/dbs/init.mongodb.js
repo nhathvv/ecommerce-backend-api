@@ -1,7 +1,11 @@
 "use strict";
 const mongoose = require("mongoose");
-const url = "mongodb://localhost:27017/shopDEV";
-const { countConnect, checkOverload } = require("../helpers/check.connect");
+const {
+  db: { host, port, name },
+} = require("../configs/mongodb.cnf");
+const url = `mongodb://${host}:${port}/${name}`;
+console.log("URL::", url);
+const { countConnect } = require("../helpers/check.connect");
 
 class Database {
   constructor() {
@@ -17,7 +21,6 @@ class Database {
       .connect(url, { maxPoolSize: 50 })
       .then(() => {
         countConnect();
-        // checkOverload();
         console.log("Connectd Mongodb success!");
       })
       .catch((err) => console.log(`Error connected`));

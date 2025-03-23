@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const compresion = require("compresion");
 const helmet = require("helmet");
+require("dotenv").config();
 
 const app = express();
 // init middlwares
