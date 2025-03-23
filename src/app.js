@@ -13,13 +13,7 @@ app.use(compresion());
 // init db
 require("../src/dbs/init.mongodb");
 // init router
-app.get("/", (req, res, next) => {
-  const str = "Nhat.dev";
-  return res.status(200).json({
-    message: "Welcome itstahn!!",
-    // metadata: str.repeat(100000),
-  });
-});
+app.use("", require("./routes/index"));
 
 // handling error
 
