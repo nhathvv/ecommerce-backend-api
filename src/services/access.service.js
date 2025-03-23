@@ -1,6 +1,6 @@
 const shopModel = require("../models/shop.model");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+const crypto = require("node:crypto");
 const KeyStoreService = require("../services/keystore.service");
 const { getInfoData } = require("../utils/index");
 const { createTokenPairs } = require("../auth/authUtils");
@@ -29,34 +29,25 @@ class AccessService {
         roles: [RoleShop.SHOP],
       });
       if (newShop) {
-        const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
-          modulusLength: 2048,
-          publicKeyEncoding: {
-            type: "spki",
-            format: "pem",
-          },
-          privateKeyEncoding: {
-            type: "pkcs8",
-            format: "pem",
-          },
-        });
-        const publicKeyString = await KeyStoreService.createKeyToken({
+        const publicKey = crypto.randomBytes(64).toString("hex");
+        const privateKey = crypto.randomBytes(64).toString("hex");
+        const keyStore = await KeyStoreService.createKeyToken({
           userId: newShop._id,
           publicKey,
+          privateKey,
         });
-        if (!publicKeyString) {
+        if (!keyStore) {
           return {
             code: "xxx",
-            status: "publicKeyString error",
+            status: "keyStore error",
           };
         }
-        const publicKeyObject = crypto.createPublicKey(publicKeyString);
         const tokens = await createTokenPairs(
           {
             userId: newShop._id,
             email,
           },
-          publicKeyObject,
+          publicKey,
           privateKey
         );
         return {

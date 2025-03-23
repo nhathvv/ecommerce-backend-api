@@ -1,14 +1,14 @@
 const keystoreModel = require("../models/keystore.model");
 
 class KeyStoreService {
-  static async createKeyToken({ userId, publicKey }) {
+  static async createKeyToken({ userId, publicKey, privateKey }) {
     try {
-      const publicKeyString = publicKey.toString();
       const tokens = await keystoreModel.create({
         user: userId,
-        publicKey: publicKeyString,
+        publicKey,
+        privateKey,
       });
-      return tokens ? tokens.publicKey : null;
+      return tokens ? tokens : null;
     } catch (error) {
       return error;
     }
